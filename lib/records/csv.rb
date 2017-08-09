@@ -19,13 +19,20 @@ module Synthea
       def self.write_csv_headers
         @@patients.write("ID,BIRTHDATE,DEATHDATE,SSN,DRIVERS,PASSPORT,PREFIX,FIRST,LAST,SUFFIX,MAIDEN,MARITAL,RACE,ETHNICITY,GENDER,BIRTHPLACE,ADDRESS\n")
         @@allergies.write("START,STOP,PATIENT,ENCOUNTER,CODE,DESCRIPTION\n")
-        @@medications.write("START,STOP,PATIENT,ENCOUNTER,CODE,DESCRIPTION,REASONCODE,REASONDESCRIPTION\n")
-        @@conditions.write("START,STOP,PATIENT,ENCOUNTER,CODE,DESCRIPTION\n")
+        if Synthea::Config.exporter.csv.export_multiple_codes
+          @@conditions.write("START,STOP,PATIENT,ENCOUNTER,SYSTEM,CODE,DESCRIPTION\n")
+          @@encounters.write("ID,DATE,PATIENT,SYSTEM,CODE,DESCRIPTION,REASONCODE,REASONDESCRIPTION\n")
+          @@medications.write("START,STOP,PATIENT,ENCOUNTER,SYSTEM,CODE,DESCRIPTION,REASONCODE,REASONDESCRIPTION\n")
+          @@procedures.write("DATE,PATIENT,ENCOUNTER,SYSTEM,CODE,DESCRIPTION,REASONCODE,REASONDESCRIPTION\n")
+        else
+          @@conditions.write("START,STOP,PATIENT,ENCOUNTER,CODE,DESCRIPTION\n")
+          @@encounters.write("ID,DATE,PATIENT,CODE,DESCRIPTION,REASONCODE,REASONDESCRIPTION\n")
+          @@medications.write("START,STOP,PATIENT,ENCOUNTER,CODE,DESCRIPTION,REASONCODE,REASONDESCRIPTION\n")
+          @@procedures.write("DATE,PATIENT,ENCOUNTER,CODE,DESCRIPTION,REASONCODE,REASONDESCRIPTION\n")
+        end
         @@careplans.write("ID,START,STOP,PATIENT,ENCOUNTER,CODE,DESCRIPTION,REASONCODE,REASONDESCRIPTION\n")
         @@observations.write("DATE,PATIENT,ENCOUNTER,CODE,DESCRIPTION,VALUE,UNITS\n")
-        @@procedures.write("DATE,PATIENT,ENCOUNTER,CODE,DESCRIPTION,REASONCODE,REASONDESCRIPTION\n")
         @@immunizations.write("DATE,PATIENT,ENCOUNTER,CODE,DESCRIPTION\n")
-        @@encounters.write("ID,DATE,PATIENT,CODE,DESCRIPTION,REASONCODE,REASONDESCRIPTION\n")
       end
 
       def self.close_csv_files
@@ -119,7 +126,13 @@ module Synthea
         condition_data = COND_LOOKUP[condition['type']]
         start = condition['time'].strftime('%Y-%m-%d')
         stop = condition['end_time'].strftime('%Y-%m-%d') if condition['end_time']
-        @@conditions.write("#{start},#{stop},#{patient_id},#{encounter_id},#{condition_data[:codes]['SNOMED-CT'].first},#{clean_column(condition_data[:description])}\n")
+        if Synthea::Config.exporter.csv.export_multiple_codes
+          condition_data[:codes].each do |system, code|
+            @@conditions.write("#{start},#{stop},#{patient_id},#{encounter_id},#{system},#{code.first},#{clean_column(condition_data[:description])}\n")
+          end
+        else
+          @@conditions.write("#{start},#{stop},#{patient_id},#{encounter_id},#{condition_data[:codes]['SNOMED-CT'].first},#{clean_column(condition_data[:description])}\n")
+        end
       end
 
       def self.encounter(encounter, patient_id)
@@ -132,7 +145,13 @@ module Synthea
           reason_code = reason_data[:codes]['SNOMED-CT'].first
           reason_desc = clean_column(reason_data[:description])
         end
-        @@encounters.write("#{encounter_id},#{encounter['time'].strftime('%Y-%m-%d')},#{patient_id},#{encounter_code},#{encounter_desc},#{reason_code},#{reason_desc}\n")
+        if Synthea::Config.exporter.csv.export_multiple_codes
+          encounter_data[:codes].each do |system, code|
+            @@encounters.write("#{encounter_id},#{encounter['time'].strftime('%Y-%m-%d')},#{patient_id},#{system},#{code.first},#{encounter_desc},#{reason_code},#{reason_desc}\n")
+          end
+        else
+          @@encounters.write("#{encounter_id},#{encounter['time'].strftime('%Y-%m-%d')},#{patient_id},#{encounter_code},#{encounter_desc},#{reason_code},#{reason_desc}\n")
+        end
         encounter_id
       end
 
@@ -183,7 +202,13 @@ module Synthea
           reason_code = reason_data[:codes]['SNOMED-CT'].first
           reason_desc = clean_column(reason_data[:description])
         end
-        @@procedures.write("#{procedure['time'].strftime('%Y-%m-%d')},#{patient_id},#{encounter_id},#{proc_code},#{proc_desc},#{reason_code},#{reason_desc}\n")
+        if Synthea::Config.exporter.csv.export_multiple_codes
+          proc_data[:codes].each do |system, code|
+            @@procedures.write("#{procedure['time'].strftime('%Y-%m-%d')},#{patient_id},#{encounter_id},#{system},#{code.first},#{proc_desc},#{reason_code},#{reason_desc}\n")
+          end
+        else
+          @@procedures.write("#{procedure['time'].strftime('%Y-%m-%d')},#{patient_id},#{encounter_id},#{proc_code},#{proc_desc},#{reason_code},#{reason_desc}\n")
+        end
       end
 
       def self.immunization(imm, patient_id, encounter_id)
@@ -223,7 +248,13 @@ module Synthea
           primary_reason_code = primary_reason_data[:codes]['SNOMED-CT'].first
           primary_reason_desc = clean_column(primary_reason_data[:description])
         end
-        @@medications.write("#{prescription['start_time'].strftime('%Y-%m-%d')},#{stop},#{patient_id},#{encounter_id},#{med_code},#{med_desc},#{primary_reason_code},#{primary_reason_desc}\n")
+        if Synthea::Config.exporter.csv.export_multiple_codes
+          med_data[:codes].each do |system, code|
+            @@medications.write("#{prescription['start_time'].strftime('%Y-%m-%d')},#{stop},#{patient_id},#{encounter_id},#{system},#{code.first},#{med_desc},#{primary_reason_code},#{primary_reason_desc}\n")
+          end
+        else
+          @@medications.write("#{prescription['start_time'].strftime('%Y-%m-%d')},#{stop},#{patient_id},#{encounter_id},#{med_code},#{med_desc},#{primary_reason_code},#{primary_reason_desc}\n")
+        end
       end
     end
     # rubocop:enable Style/ClassVars

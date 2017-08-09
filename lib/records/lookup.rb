@@ -11,7 +11,9 @@ module Synthea
     'RxNorm' => { url: 'http://www.nlm.nih.gov/research/umls/rxnorm' },
     'CVX' => { url: 'http://hl7.org/fhir/sid/cvx' },
     'NUBC' => { url: 'http://www.nubc.org/patient-discharge' },
-    'UMLS' => { url: 'http://uts.nlm.nih.gov/metathesaurus' }
+    'UMLS' => { url: 'http://uts.nlm.nih.gov/metathesaurus' },
+    'ICD-10-CM' => { url: 'http://hl7.org/fhir/sid/icd-10-cm' },
+    'ICD-9-CM' => { url: 'http://hl7.org/fhir/sid/icd-9-cm' }
   }
 
   OBS_LOOKUP = {

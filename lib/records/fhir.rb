@@ -212,11 +212,7 @@ module Synthea
         fhir_condition = FHIR::Condition.new('id' => resource_id,
                                              'subject' => { 'reference' => patient.fullUrl.to_s },
                                              'code' => {
-                                               'coding' => [{
-                                                 'code' => condition_data[:codes]['SNOMED-CT'][0],
-                                                 'display' => condition_data[:description],
-                                                 'system' => 'http://snomed.info/sct'
-                                               }],
+                                               'coding' => [],
                                                'text' => condition_data[:description]
                                              },
                                              'verificationStatus' => 'confirmed',
@@ -224,6 +220,12 @@ module Synthea
                                              'onsetDateTime' => convert_fhir_date_time(condition['time'], 'time'),
                                              'assertedDate' => convert_fhir_date_time(condition['time'], 'date'),
                                              'context' => { 'reference' => encounter.fullUrl.to_s })
+        condition_data[:codes].each do |system, code|
+          fhir_condition.code.coding << FHIR::Coding.new
+          fhir_condition.code.coding.last.code = code.first
+          fhir_condition.code.coding.last.display = condition_data[:description]
+          fhir_condition.code.coding.last.system = Synthea::CODE_SYSTEM_LOOKUP[system][:url]
+        end
         if condition['end_time']
           fhir_condition.abatementDateTime = convert_fhir_date_time(condition['end_time'], 'time')
         end
@@ -268,13 +270,19 @@ module Synthea
                                              'subject' => { 'reference' => patient.fullUrl.to_s },
                                              'serviceProvider' => { 'reference' => provider.fullUrl.to_s },
                                              'period' => { 'start' => convert_fhir_date_time(encounter['time'], 'time'), 'end' => convert_fhir_date_time(end_time, 'time') })
+        encounter_data[:codes].each do |system, code|
+          fhir_encounter.type[0].coding << FHIR::Coding.new
+          fhir_encounter.type[0].coding.last.code = code.first
+          fhir_encounter.type[0].coding.last.system = Synthea::CODE_SYSTEM_LOOKUP[system][:url]
+        end
 
         if reason_data
-          fhir_encounter.reason = FHIR::CodeableConcept.new('coding' => [{
-                                                              'code' => reason_data[:codes]['SNOMED-CT'][0],
-                                                              'display' => reason_data[:description],
-                                                              'system' => 'http://snomed.info/sct'
-                                                            }])
+          fhir_encounter.reason = FHIR::CodeableConcept.new('coding' => [])
+          reason_data[:codes].each do |system, code|
+            fhir_encounter.reason.coding << FHIR::Coding.new
+            fhir_encounter.reason.coding.last.code = code.first
+            fhir_encounter.reason.coding.last.system = Synthea::CODE_SYSTEM_LOOKUP[system][:url]
+          end
         end
 
         if encounter['discharge']
@@ -324,7 +332,7 @@ module Synthea
       end
 
       def self.allergy(allergy, fhir_record, patient, _encounter)
-        snomed_code = COND_LOOKUP[allergy['type']][:codes]['SNOMED-CT'][0]
+        allergy_data = COND_LOOKUP[allergy['type']]
         allergy = FHIR::AllergyIntolerance.new('assertedDate' => convert_fhir_date_time(allergy['time'], 'time'),
                                                'clinicalStatus' => allergy['end_time'] ? 'inactive' : 'active',
                                                'type' => 'allergy',
@@ -332,11 +340,13 @@ module Synthea
                                                'criticality' => %w(low high).sample,
                                                'verificationStatus' => 'confirmed',
                                                'patient' => { 'reference' => patient.fullUrl.to_s },
-                                               'code' => { 'coding' => [{
-                                                 'code' => snomed_code,
-                                                 'display' => COND_LOOKUP[allergy['type']][:description],
-                                                 'system' => 'http://snomed.info/sct'
-                                               }] })
+                                               'code' => { 'coding' => [] })
+        allergy_data[:codes].each do |system, code|
+          allergy.code.coding << FHIR::Coding.new
+          allergy.code.coding.last.code = code.first
+          allergy.code.coding.last.display = allergy_data[:description]
+          allergy.code.coding.last.system = Synthea::CODE_SYSTEM_LOOKUP[system][:url]
+        end
 
         if Synthea::Config.exporter.fhir.use_shr_extensions
           allergy.modifierExtension = [FHIR::Extension.new('url' => "#{SHR_EXT}shr-base-NonOccurrenceModifier-extension",
@@ -501,12 +511,18 @@ module Synthea
         fhir_procedure = FHIR::Procedure.new('subject' => { 'reference' => patient.fullUrl.to_s },
                                              'status' => 'completed',
                                              'code' => {
-                                               'coding' => [{ 'code' => proc_data[:codes]['SNOMED-CT'][0], 'display' => proc_data[:description], 'system' => 'http://snomed.info/sct' }],
+                                               'coding' => [],
                                                'text' => proc_data[:description]
                                              },
                                              # 'reasonReference' => { 'reference' => reason.resource.id },
                                              # 'performer' => { 'reference' => doctor_no_good },
                                              'context' => { 'reference' => encounter.fullUrl.to_s })
+        proc_data[:codes].each do |system, code|
+          fhir_procedure.code.coding << FHIR::Coding.new
+          fhir_procedure.code.coding.last.code = code.first
+          fhir_procedure.code.coding.last.display = proc_data[:description]
+          fhir_procedure.code.coding.last.system = Synthea::CODE_SYSTEM_LOOKUP[system][:url]
+        end
         fhir_procedure.reasonReference = FHIR::Reference.new('reference' => reason.fullUrl.to_s, 'display' => reason.resource.code.text) if reason
 
         if Synthea::Config.exporter.fhir.use_shr_extensions
@@ -559,7 +575,7 @@ module Synthea
         reasons = []
         plan['reasons'].each do |reason|
           reason_code = COND_LOOKUP[reason][:codes]['SNOMED-CT'][0]
-          r = fhir_record.entry.find { |e| e.resource.is_a?(FHIR::Condition) && reason_code == e.resource.code.coding[0].code }
+          r = fhir_record.entry.find { |e| e.resource.is_a?(FHIR::Condition) && e.resource.code.coding.find { |c| c.code == reason_code } }
           reasons << r unless r.nil?
         end
 
@@ -567,15 +583,17 @@ module Synthea
                                       'context' => { 'reference' => encounter.fullUrl.to_s },
                                       'period' => { 'start' => convert_fhir_date_time(plan['start_time']) },
                                       'category' => [{
-                                        'coding' => [{
-                                          'code' => careplan_data[:codes]['SNOMED-CT'][0],
-                                          'display' => careplan_data[:description],
-                                          'system' => 'http://snomed.info/sct'
-                                        }]
+                                        'coding' => []
                                       }],
                                       'activity' => [],
                                       'goal' => [],
                                       'addresses' => [])
+        careplan_data[:codes].each do |system, code|
+          careplan.category[0].coding << FHIR::Coding.new
+          careplan.category[0].coding.last.code = code.first
+          careplan.category[0].coding.last.display = careplan_data[:description]
+          careplan.category[0].coding.last.system = Synthea::CODE_SYSTEM_LOOKUP[system][:url]
+        end
         reasons.each do |r|
           careplan.addresses << FHIR::Reference.new('reference' => r.fullUrl.to_s) unless reasons.nil? || reasons.empty?
         end
@@ -662,7 +680,7 @@ module Synthea
         reasons = []
         prescription['reasons'].each do |reason|
           reason_code = COND_LOOKUP[reason][:codes]['SNOMED-CT'][0]
-          r = fhir_record.entry.find { |e| e.resource.is_a?(FHIR::Condition) && reason_code == e.resource.code.coding[0].code }
+          r = fhir_record.entry.find { |e| e.resource.is_a?(FHIR::Condition) && e.resource.code.coding.find { |c| c.code == reason_code } }
           reasons << r unless r.nil?
         end
 
@@ -726,13 +744,15 @@ module Synthea
         if med_entry.nil?
           resource_id = SecureRandom.uuid
           medication = FHIR::Medication.new('code' => {
-                                              'coding' => [{
-                                                'code' => med_data[:codes]['RxNorm'][0],
-                                                'display' => med_data[:description],
-                                                'system' => 'http://www.nlm.nih.gov/research/umls/rxnorm'
-                                              }],
+                                              'coding' => [],
                                               'text' => med_data[:description]
                                             }, 'id' => resource_id)
+          med_data[:codes].each do |system, code|
+            medication.code.coding << FHIR::Coding.new
+            medication.code.coding.last.code = code.first
+            medication.code.coding.last.display = med_data[:description]
+            medication.code.coding.last.system = Synthea::CODE_SYSTEM_LOOKUP[system][:url]
+          end
           med_entry = FHIR::Bundle::Entry.new
           med_entry.fullUrl = "urn:uuid:#{resource_id}"
           med_entry.resource = medication

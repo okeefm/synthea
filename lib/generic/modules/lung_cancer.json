@@ -304,6 +304,14 @@
           "system": "SNOMED-CT",
           "code": "254637007",
           "display": "Non-small cell lung cancer (disorder)"
+        }, {
+          "system": "ICD-9-CM",
+          "code": "162.9",
+          "display": "Malignant neoplasm of bronchus and lung, unspecified"
+        }, {
+          "system": "ICD-10-CM",
+          "code": "V34.90",
+          "display": "Malignant neoplasm of unspecified part of unspecified bronchus or lung"
         }
       ],
       "direct_transition": "Diagnosis Encounter III"
@@ -325,6 +333,14 @@
           "system": "SNOMED-CT",
           "code": "254632001",
           "display": "Small cell carcinoma of lung (disorder)"
+        }, {
+          "system": "ICD-9-CM",
+          "code": "162.9",
+          "display": "Malignant neoplasm of bronchus and lung, unspecified"
+        }, {
+          "system": "ICD-10-CM",
+          "code": "V34.90",
+          "display": "Malignant neoplasm of unspecified part of unspecified bronchus or lung"
         }
       ],
       "direct_transition": "Diagnosis Encounter III"
@@ -621,6 +637,14 @@
           "system": "SNOMED-CT",
           "code": "424132000",
           "display": "Non-small cell carcinoma of lung, TNM stage 1 (disorder)"
+        }, {
+          "system": "ICD-9-CM",
+          "code": "162.9",
+          "display": "Malignant neoplasm of bronchus and lung, unspecified"
+        }, {
+          "system": "ICD-10-CM",
+          "code": "V34.90",
+          "display": "Malignant neoplasm of unspecified part of unspecified bronchus or lung"
         }
       ],
       "direct_transition": "Diagnosis Encounter IV"
@@ -635,6 +659,14 @@
           "system": "SNOMED-CT",
           "code": "425048006",
           "display": "Non-small cell carcinoma of lung, TNM stage 2 (disorder)"
+        }, {
+          "system": "ICD-9-CM",
+          "code": "162.9",
+          "display": "Malignant neoplasm of bronchus and lung, unspecified"
+        }, {
+          "system": "ICD-10-CM",
+          "code": "V34.90",
+          "display": "Malignant neoplasm of unspecified part of unspecified bronchus or lung"
         }
       ],
       "direct_transition": "Diagnosis Encounter IV"
@@ -649,6 +681,14 @@
           "system": "SNOMED-CT",
           "code": "422968005",
           "display": "Non-small cell carcinoma of lung, TNM stage 3 (disorder)"
+        }, {
+          "system": "ICD-9-CM",
+          "code": "162.9",
+          "display": "Malignant neoplasm of bronchus and lung, unspecified"
+        }, {
+          "system": "ICD-10-CM",
+          "code": "V34.90",
+          "display": "Malignant neoplasm of unspecified part of unspecified bronchus or lung"
         }
       ],
       "direct_transition": "Diagnosis Encounter IV"
@@ -663,6 +703,14 @@
           "system": "SNOMED-CT",
           "code": "423121009",
           "display": "Non-small cell carcinoma of lung, TNM stage 4 (disorder)"
+        }, {
+          "system": "ICD-9-CM",
+          "code": "162.9",
+          "display": "Malignant neoplasm of bronchus and lung, unspecified"
+        }, {
+          "system": "ICD-10-CM",
+          "code": "V34.90",
+          "display": "Malignant neoplasm of unspecified part of unspecified bronchus or lung"
         }
       ],
       "direct_transition": "Diagnosis Encounter IV"
@@ -677,6 +725,14 @@
           "system": "SNOMED-CT",
           "code": "67811000119102",
           "display": "Primary small cell malignant neoplasm of lung, TNM stage 1 (disorder)"
+        }, {
+          "system": "ICD-9-CM",
+          "code": "162.9",
+          "display": "Malignant neoplasm of bronchus and lung, unspecified"
+        }, {
+          "system": "ICD-10-CM",
+          "code": "V34.90",
+          "display": "Malignant neoplasm of unspecified part of unspecified bronchus or lung"
         }
       ],
       "direct_transition": "Diagnosis Encounter IV"
@@ -691,6 +747,14 @@
           "system": "SNOMED-CT",
           "code": "67821000119109",
           "display": "Primary small cell malignant neoplasm of lung, TNM stage 2 (disorder)"
+        }, {
+          "system": "ICD-9-CM",
+          "code": "162.9",
+          "display": "Malignant neoplasm of bronchus and lung, unspecified"
+        }, {
+          "system": "ICD-10-CM",
+          "code": "V34.90",
+          "display": "Malignant neoplasm of unspecified part of unspecified bronchus or lung"
         }
       ],
       "direct_transition": "Diagnosis Encounter IV"
@@ -705,6 +769,14 @@
           "system": "SNOMED-CT",
           "code": "67831000119107",
           "display": "Primary small cell malignant neoplasm of lung, TNM stage 3 (disorder)"
+        }, {
+          "system": "ICD-9-CM",
+          "code": "162.9",
+          "display": "Malignant neoplasm of bronchus and lung, unspecified"
+        }, {
+          "system": "ICD-10-CM",
+          "code": "V34.90",
+          "display": "Malignant neoplasm of unspecified part of unspecified bronchus or lung"
         }
       ],
       "direct_transition": "Diagnosis Encounter IV"
@@ -719,6 +791,14 @@
           "system": "SNOMED-CT",
           "code": "67841000119103",
           "display": "Primary small cell malignant neoplasm of lung, TNM stage 4 (disorder)"
+        }, {
+          "system": "ICD-9-CM",
+          "code": "162.9",
+          "display": "Malignant neoplasm of bronchus and lung, unspecified"
+        }, {
+          "system": "ICD-10-CM",
+          "code": "V34.90",
+          "display": "Malignant neoplasm of unspecified part of unspecified bronchus or lung"
         }
       ],
       "direct_transition": "Diagnosis Encounter IV"

@@ -18,10 +18,10 @@ synthea:
     text:
       export: false
     csv:
-      export: true
+      export: false
       export_headers: true
       export_multiple_codes: true # if true, will output 1 or more rows for each item each with a different system/code
-    years_of_history: 100
+    years_of_history: 10
     location: <%= (ENV['OUTPUT_DIR'] || './output/') %>  # should either start with . for relative path or / for absolute
     folder_per_city: false
     subfolders_by_id_substring: false # if true, creates subfolders based on the first characters of the patient guid. this reduces the # of files in any single folder
@@ -38,7 +38,7 @@ synthea:
   sequential: # sequential population generation... one at a time...
     # population is scaled to accurately represent MA (using a "true" population of 6,794,422)
     only_dead_patients: false
-    population: 10
+    population: 100
     real_world_population: 6794422 #sum of the jsons in the config folder
     track_detailed_prevalence: true
     multithreading: false

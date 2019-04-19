@@ -1,0 +1,205 @@
+{
+  "name": "VTE Prophylaxis",
+  "remarks": [
+    "Venous Thromboembolism (VTE), or a blood clot that forms in the deep veins and then travels to the lungs, is a common occurrence in patients in inpatient and surgical settings. Proper VTE prophylaxis prior to surgery can prevent this complication; however, many patients do not receive adequate prophylaxis for a number of reasons.",
+    "",
+    "Module limitations: currently, \"incorrect prophylaxis\" is modeled as \"no prophylaxis\" for simplicity.",
+    "",
+    "References:",
+    "Prevention of Venous Thromboembolism: Adherence to the 1995 American College of Chest Physicians Consensus Guidelines for Surgical Patients",
+    "https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/485224",
+    "",
+    "Venous Thromboembolism Prophylaxis",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3747284/"
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "complex_transition": [
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "joint_replacement",
+            "operator": "==",
+            "value": "knee"
+          },
+          "distributions": [
+            {
+              "transition": "Correct_VTE_Prophylaxis",
+              "distribution": 0.759
+            },
+            {
+              "transition": "No_VTE_Prophylaxis",
+              "distribution": 0.2410000000000001
+            }
+          ]
+        },
+        {
+          "distributions": [
+            {
+              "transition": "Correct_VTE_Prophylaxis",
+              "distribution": 0.843
+            },
+            {
+              "transition": "No_VTE_Prophylaxis",
+              "distribution": 0.15700000000000003
+            }
+          ],
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "joint_replacement",
+            "operator": "==",
+            "value": "hip"
+          }
+        },
+        {
+          "distributions": [
+            {
+              "transition": "Correct_VTE_Prophylaxis",
+              "distribution": 0.75
+            },
+            {
+              "transition": "No_VTE_Prophylaxis",
+              "distribution": 0.25
+            }
+          ]
+        }
+      ]
+    },
+    "Terminal": {
+      "type": "Terminal"
+    },
+    "Correct_VTE_Prophylaxis": {
+      "type": "Simple",
+      "complex_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 40,
+            "unit": "years",
+            "value": 0
+          },
+          "distributions": [
+            {
+              "transition": "Compression_device",
+              "distribution": 0.75
+            },
+            {
+              "transition": "VTE_medication",
+              "distribution": 0.25
+            }
+          ]
+        },
+        {
+          "distributions": [
+            {
+              "transition": "Compression_device",
+              "distribution": 0.75
+            },
+            {
+              "transition": "VTE_medication",
+              "distribution": 0.25
+            }
+          ]
+        }
+      ]
+    },
+    "No_VTE_Prophylaxis": {
+      "type": "Simple",
+      "direct_transition": "Terminal"
+    },
+    "Compression_device": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "transition": "IPCC_Device",
+          "distribution": 0.33999999999999997
+        },
+        {
+          "transition": "Compression_Stockings",
+          "distribution": 0.33
+        },
+        {
+          "transition": "VFP_Device",
+          "distribution": 0.33
+        }
+      ]
+    },
+    "Compression_Stockings": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": 348681001,
+          "display": "Graduated compression elastic hosiery (physical object)"
+        }
+      ],
+      "direct_transition": "Terminal"
+    },
+    "IPCC_Device": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": 469365001,
+          "display": "Intermittent venous compression system (physical object)"
+        }
+      ],
+      "direct_transition": "Terminal"
+    },
+    "VFP_Device": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": 442023007,
+          "display": "Venous foot pump, device (physical object)"
+        }
+      ],
+      "direct_transition": "Terminal"
+    },
+    "VTE_medication": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "transition": "Low Molecular Weight Heparin",
+          "distribution": 0.5
+        },
+        {
+          "transition": "Warfarin",
+          "distribution": 0.5
+        }
+      ]
+    },
+    "Low Molecular Weight Heparin": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": 854255,
+          "display": "Enoxaparin Sodium 100 MG/ML Injectable Solution"
+        }
+      ],
+      "direct_transition": "Medication End VTEP",
+      "assign_to_attribute": "vte_prophylaxis"
+    },
+    "Warfarin": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": 855324,
+          "display": "Warfarin Sodium 4 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "Medication End VTEP",
+      "assign_to_attribute": "vte_prophylaxis"
+    },
+    "Medication End VTEP": {
+      "type": "MedicationEnd",
+      "direct_transition": "Terminal",
+      "referenced_by_attribute": "vte_prophylaxis"
+    }
+  }
+}

@@ -1207,11 +1207,6 @@
       ],
       "direct_transition": "Cefotaxime_End"
     },
-    "Anesthesia": {
-      "type": "CallSubmodule",
-      "submodule": "surgery/general_anesthesia",
-      "direct_transition": "Ready_for_Surgery"
-    },
     "ECG": {
       "type": "Procedure",
       "codes": [
@@ -1262,12 +1257,12 @@
     },
     "Cefotaxime_End": {
       "type": "MedicationEnd",
-      "direct_transition": "Anesthesia",
+      "direct_transition": "VTE_Prophylaxis",
       "medication_order": "Cefotaxime"
     },
     "Penicillin_End": {
       "type": "MedicationEnd",
-      "direct_transition": "Anesthesia",
+      "direct_transition": "VTE_Prophylaxis",
       "medication_order": "Penicillin"
     },
     "Saline_End": {
@@ -1306,6 +1301,16 @@
       "type": "MedicationEnd",
       "direct_transition": "Complete_Blood_Count",
       "medication_order": "Antiemetic"
+    },
+    "VTE_Prophylaxis": {
+      "type": "CallSubmodule",
+      "submodule": "surgery/vte_prophylaxis",
+      "direct_transition": "Anesthesia"
+    },
+    "Anesthesia": {
+      "type": "CallSubmodule",
+      "submodule": "surgery/general_anesthesia",
+      "direct_transition": "Ready_for_Surgery"
     }
   }
 }

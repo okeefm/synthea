@@ -56,31 +56,14 @@
           "system": "SNOMED-CT",
           "code": "183495009",
           "display": "Non-urgent orthopedic admission"
+        },
+        {
+          "system": "SNOMED-CT",
+          "code": 8715000,
+          "display": "Hospital admission, elective (procedure)"
         }
       ],
-      "conditional_transition": [
-        {
-          "condition": {
-            "condition_type": "Attribute",
-            "attribute": "joint_replacement",
-            "operator": "==",
-            "value": "knee"
-          },
-          "transition": "Knee_Replacement_Procedure"
-        },
-        {
-          "condition": {
-            "condition_type": "Attribute",
-            "attribute": "joint_replacement",
-            "operator": "==",
-            "value": "hip"
-          },
-          "transition": "Hip_Replacement_Procedure"
-        },
-        {
-          "transition": "Terminal"
-        }
-      ]
+      "direct_transition": "VTE_Prophylaxis"
     },
     "Knee_Replacement_Procedure": {
       "type": "Procedure",
@@ -312,6 +295,38 @@
     "Post_Procedure_Encounter_End": {
       "type": "EncounterEnd",
       "direct_transition": "Delay_Until_New_Replacement_Needed"
+    },
+    "Anesthesia": {
+      "type": "CallSubmodule",
+      "submodule": "surgery/general_anesthesia",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "joint_replacement",
+            "operator": "==",
+            "value": "knee"
+          },
+          "transition": "Knee_Replacement_Procedure"
+        },
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "joint_replacement",
+            "operator": "==",
+            "value": "hip"
+          },
+          "transition": "Hip_Replacement_Procedure"
+        },
+        {
+          "transition": "Terminal"
+        }
+      ]
+    },
+    "VTE_Prophylaxis": {
+      "type": "CallSubmodule",
+      "submodule": "surgery/vte_prophylaxis",
+      "direct_transition": "Anesthesia"
     }
   }
 }

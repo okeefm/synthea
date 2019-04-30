@@ -43,86 +43,14 @@
         "The age-adjusted prevalence of gallstone disease (gallstones + cholecystectomy) among Mexican American men (7.2%) was 1.7 times that of Cuban American men and 1.8 times that of Puerto Rican men. The prevalence for Mexican American women (23.2%) was 1.5 times that of Cuban American women and 1.7 times that of Puerto Rican women.",
         "https://www.ncbi.nlm.nih.gov/pubmed/2642879"
       ],
-      "complex_transition": [
+      "distributed_transition": [
         {
-          "condition": {
-            "condition_type": "Race",
-            "race": "Native"
-          },
-          "distributions": [
-            {
-              "transition": "Female_Gallstone_Formation",
-              "distribution": 0.641
-            },
-            {
-              "transition": "Terminal",
-              "distribution": 0.359
-            }
-          ]
+          "transition": "Female_Gallstone_Formation",
+          "distribution": 0.5
         },
         {
-          "condition": {
-            "condition_type": "Race",
-            "race": "White"
-          },
-          "distributions": [
-            {
-              "transition": "Female_Gallstone_Formation",
-              "distribution": 0.166
-            },
-            {
-              "transition": "Terminal",
-              "distribution": 0.834
-            }
-          ]
-        },
-        {
-          "distributions": [
-            {
-              "transition": "Female_Gallstone_Formation",
-              "distribution": 0.139
-            },
-            {
-              "transition": "Terminal",
-              "distribution": 0.861
-            }
-          ],
-          "condition": {
-            "condition_type": "Race",
-            "race": "Black"
-          }
-        },
-        {
-          "condition": {
-            "condition_type": "Race",
-            "race": "Asian"
-          },
-          "distributions": [
-            {
-              "transition": "Female_Gallstone_Formation",
-              "distribution": 0.139
-            },
-            {
-              "transition": "Terminal",
-              "distribution": 0.861
-            }
-          ]
-        },
-        {
-          "condition": {
-            "condition_type": "Race",
-            "race": "Hispanic"
-          },
-          "distributions": [
-            {
-              "transition": "Female_Gallstone_Formation",
-              "distribution": 0.232
-            },
-            {
-              "transition": "Terminal",
-              "distribution": 0.768
-            }
-          ]
+          "transition": "Terminal",
+          "distribution": 0.5
         }
       ]
     },
@@ -134,86 +62,14 @@
         "The age-adjusted prevalence of gallstone disease (gallstones + cholecystectomy) among Mexican American men (7.2%) was 1.7 times that of Cuban American men and 1.8 times that of Puerto Rican men. The prevalence for Mexican American women (23.2%) was 1.5 times that of Cuban American women and 1.7 times that of Puerto Rican women.",
         "https://www.ncbi.nlm.nih.gov/pubmed/2642879"
       ],
-      "complex_transition": [
+      "distributed_transition": [
         {
-          "condition": {
-            "condition_type": "Race",
-            "race": "Native"
-          },
-          "distributions": [
-            {
-              "transition": "Male_Gallstone_Formation",
-              "distribution": 0.295
-            },
-            {
-              "transition": "Terminal",
-              "distribution": 0.705
-            }
-          ]
+          "transition": "Male_Gallstone_Formation",
+          "distribution": 0.5
         },
         {
-          "distributions": [
-            {
-              "transition": "Male_Gallstone_Formation",
-              "distribution": 0.0866
-            },
-            {
-              "transition": "Terminal",
-              "distribution": 0.9134
-            }
-          ],
-          "condition": {
-            "condition_type": "Race",
-            "race": "White"
-          }
-        },
-        {
-          "condition": {
-            "condition_type": "Race",
-            "race": "Black"
-          },
-          "distributions": [
-            {
-              "transition": "Male_Gallstone_Formation",
-              "distribution": 0.053
-            },
-            {
-              "transition": "Terminal",
-              "distribution": 0.947
-            }
-          ]
-        },
-        {
-          "condition": {
-            "condition_type": "Race",
-            "race": "Asian"
-          },
-          "distributions": [
-            {
-              "transition": "Male_Gallstone_Formation",
-              "distribution": 0.053
-            },
-            {
-              "transition": "Terminal",
-              "distribution": 0.947
-            }
-          ]
-        },
-        {
-          "condition": {
-            "condition_type": "Race",
-            "race": "Hispanic"
-          },
-          "distributions": [
-            {
-              "transition": "Male_Gallstone_Formation",
-              "distribution": 0.072
-            },
-            {
-              "transition": "Terminal",
-              "distribution": 0.928
-            }
-          ]
+          "transition": "Terminal",
+          "distribution": 0.5
         }
       ]
     },
@@ -362,11 +218,11 @@
       "distributed_transition": [
         {
           "transition": "Symptom_Onset_Delay",
-          "distribution": 0.2
+          "distribution": 0.8
         },
         {
           "transition": "Terminal",
-          "distribution": 0.8
+          "distribution": 0.19999999999999996
         }
       ]
     },

@@ -26,11 +26,11 @@
           "distributions": [
             {
               "transition": "Correct_VTE_Prophylaxis",
-              "distribution": 0.759
+              "distribution": 0.9
             },
             {
               "transition": "No_VTE_Prophylaxis",
-              "distribution": 0.2410000000000001
+              "distribution": 0.1
             }
           ]
         },
@@ -164,11 +164,15 @@
       "distributed_transition": [
         {
           "transition": "Low Molecular Weight Heparin",
-          "distribution": 0.5
+          "distribution": 0.333
         },
         {
           "transition": "Warfarin",
-          "distribution": 0.5
+          "distribution": 0.333
+        },
+        {
+          "transition": "Injectable Factor Xa Inhibitor",
+          "distribution": 0.3340000000000001
         }
       ]
     },
@@ -182,7 +186,8 @@
         }
       ],
       "direct_transition": "Medication End VTEP",
-      "assign_to_attribute": "vte_prophylaxis"
+      "assign_to_attribute": "vte_prophylaxis",
+      "administration": true
     },
     "Warfarin": {
       "type": "MedicationOrder",
@@ -194,12 +199,26 @@
         }
       ],
       "direct_transition": "Medication End VTEP",
-      "assign_to_attribute": "vte_prophylaxis"
+      "assign_to_attribute": "vte_prophylaxis",
+      "administration": true
     },
     "Medication End VTEP": {
       "type": "MedicationEnd",
       "direct_transition": "Terminal",
       "referenced_by_attribute": "vte_prophylaxis"
+    },
+    "Injectable Factor Xa Inhibitor": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": 861360,
+          "display": "0.5 ML Fondaparinux sodium 5 MG/ML Prefilled Syringe"
+        }
+      ],
+      "direct_transition": "Medication End VTEP",
+      "assign_to_attribute": "vte_prophylaxis",
+      "administration": true
     }
   }
 }

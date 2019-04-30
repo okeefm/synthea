@@ -157,11 +157,11 @@
           },
           "distributions": [
             {
-              "distribution": 0.0121,
+              "distribution": 0.25,
               "transition": "Setup_Knee_Replacement"
             },
             {
-              "distribution": 0.9879,
+              "distribution": 0.75,
               "transition": "End_Encounter"
             }
           ]
@@ -173,11 +173,11 @@
           },
           "distributions": [
             {
-              "distribution": 0.0189,
+              "distribution": 0.25,
               "transition": "Setup_Hip_Replacement"
             },
             {
-              "distribution": 0.9811,
+              "distribution": 0.75,
               "transition": "End_Encounter"
             }
           ]

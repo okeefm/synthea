@@ -235,6 +235,11 @@
           "system": "SNOMED-CT",
           "code": 50849002,
           "display": "Emergency Room Admission"
+        },
+        {
+          "system": "SNOMED-CT",
+          "code": 183452005,
+          "display": "Emergency Hospital Admission (procedure)"
         }
       ],
       "remarks": [
